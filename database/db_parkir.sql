@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 22, 2024 at 05:58 AM
+-- Generation Time: Oct 22, 2024 at 09:50 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -31,7 +31,7 @@ CREATE TABLE `tbl_karyawan` (
   `id` int(11) NOT NULL,
   `nik` varchar(20) NOT NULL,
   `nama_karyawan` varchar(100) NOT NULL,
-  `tanggal_masuk` datetime NOT NULL
+  `tanggal_masuk` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -39,8 +39,10 @@ CREATE TABLE `tbl_karyawan` (
 --
 
 INSERT INTO `tbl_karyawan` (`id`, `nik`, `nama_karyawan`, `tanggal_masuk`) VALUES
-(1, '123456', 'John Doe', '2023-01-01 00:00:00'),
-(2, '654321', 'Jane Smith', '2023-02-15 00:00:00');
+(7, '102', 'Budi Santoso', '2019-03-20'),
+(8, '103', 'Citra Dewi', '2021-07-10'),
+(9, '104', 'Doni Prabowo', '2022-05-05'),
+(10, '105', 'Eka Putri', '2023-02-18');
 
 -- --------------------------------------------------------
 
@@ -50,11 +52,18 @@ INSERT INTO `tbl_karyawan` (`id`, `nik`, `nama_karyawan`, `tanggal_masuk`) VALUE
 
 CREATE TABLE `tbl_kendaraan` (
   `id` int(11) NOT NULL,
+  `id_karyawan` int(11) DEFAULT NULL,
   `jenis_kendara` enum('motor','mobil','lainnya') DEFAULT NULL,
-  `nopol` int(11) NOT NULL,
-  `status` enum('karyawan','umum') DEFAULT NULL,
-  `pemilik` varchar(100) DEFAULT NULL
+  `nopol` varchar(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_kendaraan`
+--
+
+INSERT INTO `tbl_kendaraan` (`id`, `id_karyawan`, `jenis_kendara`, `nopol`) VALUES
+(1, 1, 'motor', 'd4024xyu'),
+(2, 1, 'mobil', 'd3232xyz');
 
 -- --------------------------------------------------------
 
@@ -82,6 +91,12 @@ ALTER TABLE `tbl_karyawan`
   ADD UNIQUE KEY `nik` (`nik`);
 
 --
+-- Indexes for table `tbl_kendaraan`
+--
+ALTER TABLE `tbl_kendaraan`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `tbl_parkir`
 --
 ALTER TABLE `tbl_parkir`
@@ -95,6 +110,12 @@ ALTER TABLE `tbl_parkir`
 -- AUTO_INCREMENT for table `tbl_karyawan`
 --
 ALTER TABLE `tbl_karyawan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `tbl_kendaraan`
+--
+ALTER TABLE `tbl_kendaraan`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --

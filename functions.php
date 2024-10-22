@@ -20,9 +20,7 @@ require 'connection.php';
     echo "Aksi dan ID tidak di definisikan!";
   }
 
-  function add_data(){
 
-  }
 
   function delete_data($id){
     global $conn;
