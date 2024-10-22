@@ -13,10 +13,7 @@
     else{
         echo "<script type='text/javascript'>
             alert('DB successfully connected');
-            setTimeout(function() {
-                // Close the alert after 1 second (This won't work with default alert)
-                window.location.reload(); // Optionally reload the page after closing
-            }, 1000);
+           
           </script>";
         
     }
