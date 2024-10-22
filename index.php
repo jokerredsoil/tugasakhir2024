@@ -1,11 +1,15 @@
 <?php
-include 'function.php';
-session_start();
+include 'connection.php';
+// session_start();
 
-if(!isset($_SESSION['username'])){
-    header("Location: login.php");
-    exit();
-}
+// if(!isset($_SESSION['username'])){
+//     header("Location: login.php");
+//     exit();
+// }
+
+$data_karyawan  = myquery("SELECT * FROM tbl_karyawan ");
+
+
 
 
 ?>
@@ -19,6 +23,7 @@ if(!isset($_SESSION['username'])){
     <title>Home</title>
 </head>
 <body>
+
     
 </body>
 </html>
