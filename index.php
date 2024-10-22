@@ -50,9 +50,7 @@ $data_karyawan  = myquery("SELECT * FROM tbl_karyawan ");
 
 
                         <!-- <a href="form_edit.php?id=<?= $data['id'] ?>" class="btn btn-primary">Edit</a> -->
-                       <button name="delete">hapus
-
-                       </button> 
+                  
                        <form action="" method="post"></form>
                        <a href="function.php?action=delete&id=<?= $data['id'] ?>" class="btn btn-outline-danger" onClick="return confirm('Yakin akan menghapus?')">Hapus</a>
 
