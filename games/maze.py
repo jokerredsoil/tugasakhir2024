@@ -26,7 +26,7 @@ win_width = 700
 win_height = 500
 window = display.set_mode((win_width, win_height))
 display.set_caption("Maze")
-background = transform.scale(image.load("background.jpg"), (win_width, win_height))
+background = transform.scale(image.load('background.jpg'), (win_width, win_height))
 
 
 #Game characters:
