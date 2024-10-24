@@ -1,6 +1,8 @@
 <?php
 require 'connection.php';
 
+$tabel = 'tbl_parkir';
+
 //   Jika terdapat 'action' dan 'id' maka melakukan sesuatu
   if(isset($_GET['action']) && isset($_GET['id'])){
     $action = $_GET['action'];
@@ -24,7 +26,7 @@ require 'connection.php';
 
   function delete_data($id){
     global $conn;
-    $res = mysqli_query($conn, "DELETE FROM tbl_karyawan WHERE id = " . $id);
+    $res = mysqli_query($conn, "DELETE FROM tbl_parkir WHERE id = " . $id);
 
     if($res){
       // Jika true
