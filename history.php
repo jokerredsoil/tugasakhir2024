@@ -5,11 +5,6 @@ $data = myquery("SELECT p.id, p.nopol, p.jenis_kendaraan, p.pemilik, p.tanggal, 
 FROM tbl_parkir as p
 ");
 
-$data_kendaraan = myquery("SELECT ka.nama_karyawan, ke.jenis_kendaraan, ke.nopol
-FROM tbl_kendaraan as ke
-JOIN tbl_karyawan as ka ON ka.id = ke.id_karyawan");
-var_dump($data);
-
 ?>
 
 <?php
