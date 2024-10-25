@@ -21,7 +21,7 @@ if (isset($_POST['submit_insert_karyawan'])) {
     $formatted_tanggal = $tanggal_baru->format('Y-m-d');
 
     /// Insert
-    $query_insert = "INSERT INTO tbl_parkir VALUE (null, '$nopol', '$jenis_kendaraan', '$pemilik', $formatted_tanggal',null)";
+    $query_insert = "INSERT INTO tbl_parkir VALUE (null, '$nopol', '$jenis_kendaraan', '$pemilik', '$formatted_tanggal',null)";
 
     $res = mysqli_query($conn, $query_insert);
 
