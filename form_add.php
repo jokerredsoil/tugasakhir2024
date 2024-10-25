@@ -7,18 +7,21 @@ $data_kendaraan = myquery("SELECT * FROM tbl_kendaraan");
 
 
 
-if (isset($_POST['submit_insert_karyawan'])) {
-    $nik = $_POST['txt_nik'];
-    $nama = $_POST['txt_nama'];
 
-    $tanggal_masuk = $_POST['txt_tanggal'];
+if (isset($_POST['submit_insert_karyawan'])) {
+    $nopol= $_POST['txt_nopol'];
+    $jenis_kendaraan = $_POST['txt_jenisKendaraan'];
+
+    $pemilik= $_POST['txt_pemilik'];
+    
+    $masuk = $_POST['txt_masuk'];
 
     // Menformat tanggal
-    $tanggal_baru = new DateTime($tanggal);
+    $tanggal_baru = new DateTime($masuk);
     $formatted_tanggal = $tanggal_baru->format('Y-m-d');
 
     /// Insert
-    $query_insert = "INSERT INTO tbl_karyawan VALUE (null, '$nik', '$nama', '$formatted_tanggal')";
+    $query_insert = "INSERT INTO tbl_parkir VALUE (null, '$nopol', '$jenis_kendaraan', '$pemilik', '$formatted_tanggal',null)";
 
     $res = mysqli_query($conn, $query_insert);
 
@@ -30,50 +33,48 @@ if (isset($_POST['submit_insert_karyawan'])) {
     }
 }
 ?>
+<?php
+include('layout/header.php');
+?>
 
-<!DOCTYPE html>
-<html lang="en">
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form tambah</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-</head>
+            <h3 class="mt-4 mb-2">Formulir Tambah</h3>
+            <a href="./index.php" class="d-block mb-4">Kembali</a>
 
-<body>
+            <?php if (isset($err)): ?>
+                <p><?= $err; ?></p>
+            <?php endif; ?>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12">
+            <div class="card mb-4">
+                <div class="card-body">
 
-                <h3 class="mt-4 mb-2">Formulir Tambah</h3>
-                <a href="./index.php" class="d-block mb-4">Kembali</a>
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label>nopol</label>
+                            <input type="text" name="txt_nopol" class="form-control" placeholder="Masukan Plat Nomor" autocomplete="off" />
+                        </div>
 
-                <?php if (isset($err)): ?>
-                    <p><?= $err; ?></p>
-                <?php endif; ?>
+                        <div class="mb-3">
+                            <label>jenis kendaraan</label>
+                            <input type="text" name="txt_jenisKendaraan" class="form-control" placeholder="Input jenis kendaraan" autocomplete="off" />
+                        </div>
 
-                <div class="card mb-4">
-                    <div class="card-body">
+                        <div class="mb-3">
+                            <label>pemilik</label>
+                            <input type="text" name="txt_pemilik" class="form-control" placeholder="umum/karyawan" autocomplete="off" />
+                        </div>
 
-                        <form method="POST">
-                            <div class="mb-3">
-                                <label>NIK</label>
-                                <input type="text" name="txt_nik" class="form-control" placeholder="Input Nomor induk Karyawan" autocomplete="off" />
-                            </div>
+                        <div class="mb-3">
+                            <label>masuk</label>
+                            <input type="date" name="txt_masuk" class="form-control" autocomplete="off" />
+                        </div>
 
-                            <div class="mb-3">
-                                <label>NAMA</label>
-                                <input type="text" name="txt_nama" class="form-control" placeholder="Input Nama Karyawan" autocomplete="off" />
-                            </div>
+                        
 
-                            <div class="mb-3">
-                                <label>TANGGAL</label>
-                                <input type="date" name="txt_tanggal" class="form-control" autocomplete="off" />
-                            </div>
-
-                            <!-- <div class="mb-3">
+                        <!-- <div class="mb-3">
                                 <label>JENIS KENDARAAN</label>
                                 
                                     <form>
@@ -101,18 +102,16 @@ if (isset($_POST['submit_insert_karyawan'])) {
                                     </form>
                              
                             <div class="mb-3"> -->
-                                <button class="btn btn-primary" name="submit_insert_karyawan">Simpan</button>
-                            </div>
-                        </form>
-
-                    </div>
+                        <button class="btn btn-primary" name="submit_insert_karyawan">Simpan</button>
                 </div>
+                </form>
 
             </div>
         </div>
+
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-</body>
-
-</html>
+</div>
+</div>
+<?php
+include('layout/footer.php')
+?>
