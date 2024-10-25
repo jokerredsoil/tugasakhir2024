@@ -13,7 +13,7 @@
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid ">
 
-                <button type="button" class="btn btn-success col-sm-5"><a class="navbar-brand column " href="#">Masuk Kendaraan</a></button>
+                <button type="button" class="btn btn-success col-sm-5"><a class="navbar-brand column " href="form_add.php">Masuk Kendaraan</a></button>
                 <button type="button" class="btn btn-primary col-sm-5"><a class="navbar-brand column" href="#">History</a></button>
 
 
