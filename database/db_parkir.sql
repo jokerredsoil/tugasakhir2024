@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 22, 2024 at 09:50 AM
+-- Generation Time: Oct 26, 2024 at 01:18 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -51,9 +51,9 @@ INSERT INTO `tbl_karyawan` (`id`, `nik`, `nama_karyawan`, `tanggal_masuk`) VALUE
 --
 
 CREATE TABLE `tbl_kendaraan` (
-  `id` int(11) NOT NULL,
-  `id_karyawan` int(11) DEFAULT NULL,
-  `jenis_kendara` enum('motor','mobil','lainnya') DEFAULT NULL,
+  `id_kendaraan` int(11) NOT NULL,
+  `nik` int(11) DEFAULT NULL,
+  `jenis_kendaraan` enum('motor','mobil','lainnya') DEFAULT NULL,
   `nopol` varchar(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -61,7 +61,7 @@ CREATE TABLE `tbl_kendaraan` (
 -- Dumping data for table `tbl_kendaraan`
 --
 
-INSERT INTO `tbl_kendaraan` (`id`, `id_karyawan`, `jenis_kendara`, `nopol`) VALUES
+INSERT INTO `tbl_kendaraan` (`id_kendaraan`, `nik`, `jenis_kendaraan`, `nopol`) VALUES
 (1, 1, 'motor', 'd4024xyu'),
 (2, 1, 'mobil', 'd3232xyz');
 
@@ -74,10 +74,20 @@ INSERT INTO `tbl_kendaraan` (`id`, `id_karyawan`, `jenis_kendara`, `nopol`) VALU
 CREATE TABLE `tbl_parkir` (
   `id` int(15) NOT NULL,
   `nopol` varchar(10) NOT NULL,
-  `jenis kendaraan` varchar(100) NOT NULL,
+  `jenis_kendaraan` varchar(100) NOT NULL,
+  `pemilik` varchar(100) DEFAULT NULL,
+  `tanggal` date DEFAULT NULL,
   `masuk` timestamp NOT NULL DEFAULT current_timestamp(),
-  `keluar` datetime NOT NULL
+  `keluar` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_parkir`
+--
+
+INSERT INTO `tbl_parkir` (`id`, `nopol`, `jenis_kendaraan`, `pemilik`, `tanggal`, `masuk`, `keluar`) VALUES
+(1, 'd4245fu', 'motor', '', '2024-10-24', '2024-10-24 00:40:20', NULL),
+(2, 'd3030fu', 'mobil', '1', '2024-10-01', '2024-10-24 14:55:44', '2024-10-28 22:29:37');
 
 --
 -- Indexes for dumped tables
@@ -94,7 +104,7 @@ ALTER TABLE `tbl_karyawan`
 -- Indexes for table `tbl_kendaraan`
 --
 ALTER TABLE `tbl_kendaraan`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id_kendaraan`);
 
 --
 -- Indexes for table `tbl_parkir`
@@ -116,13 +126,13 @@ ALTER TABLE `tbl_karyawan`
 -- AUTO_INCREMENT for table `tbl_kendaraan`
 --
 ALTER TABLE `tbl_kendaraan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_kendaraan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tbl_parkir`
 --
 ALTER TABLE `tbl_parkir`
-  MODIFY `id` int(15) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
