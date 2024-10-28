@@ -1,4 +1,8 @@
 <?php
+
+
+
+
 // Connect to the database
 require 'connection.php';
 
@@ -58,7 +62,7 @@ if (isset($_POST['submit'])) {
 
         if ($insertStmt->execute()) {
             echo "Data successfully inserted into tbl_parkir.";
-            $showForm = false;  // Hide form after successful insert
+            $showForm = false;  
 
         } else {
             echo "Error inserting data: " . $conn->error;
@@ -75,6 +79,7 @@ $conn->close();
 ?>
 
 <?php
+$page = 'add_form';
 include('layout/header.php');
 ?>
 
@@ -83,7 +88,7 @@ include('layout/header.php');
         <div class="col-sm-12">
 
             <h3 class="mt-4 mb-2">Formulir Tambah</h3>
-            <a href="./index.php" class="d-block mb-4">Kembali</a>
+           
 
             <?php if ($error): ?>
                 <p style="color: red;"><?= $error; ?></p>

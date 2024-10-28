@@ -11,25 +11,36 @@
 <body class="d-flex flex-column min-vh-100">
     <header>
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid ">
+            <div class="container-fluid">
 
-                <button type="button" class="btn btn-success col-sm-5"><a class="navbar-brand column " href="./form_add.php">Masuk Kendaraan</a></button>
-                <button type="button" class="btn btn-primary col-sm-5"><a class="navbar-brand column" href="./history.php">History</a></button>
+                <?php
+                // Button 1
+                $button1Text = $page === 'index' ? 'Masuk Kendaraan' : ($page === 'add_form' ? 'Kembali' : '');
+                $button1Link = $page === 'index' ? './form_add.php' : ($page === 'add_form' ? './index.php' : '');
 
+                if ($button1Text) {
+                    echo '<button type="button" class="btn btn-success col-sm-5"><a class="navbar-brand column" href="' . $button1Link . '">' . $button1Text . '</a></button>';
+                }
 
+                // Button 2
+                $button2Text = $page === 'index' ? 'History' : ($page === 'history' ? 'Kembali' : '');
+                $button2Link = $page === 'index' ? './history.php' : ($page === 'history' ? './index.php' : '');
+
+                if ($button2Text) {
+                    echo '<button type="button" class="btn btn-primary col-sm-5"><a class="navbar-brand column" href="' . $button2Link . '">' . $button2Text . '</a></button>';
+                }
+                ?>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
 
+                <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
                     <ul class="navbar-nav me-auto sm-3">
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="#">Logout</a>
                         </li>
-
                     </ul>
-
                 </div>
             </div>
         </nav>

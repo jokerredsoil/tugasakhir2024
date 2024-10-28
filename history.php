@@ -8,6 +8,7 @@ FROM tbl_parkir as p
 ?>
 
 <?php
+$page = 'history';
 include('layout/header.php');
 ?>
 <main class="flex-grow-1">
@@ -36,7 +37,7 @@ include('layout/header.php');
                         <td><?= $row['keluar'] ?></td>
                         <td scope="row">
                             <a href="form_edit.php?id=<?=$row['id'] ?>" class="btn btn-primary">Edit</a>
-                            <a href="function.php?action=delete&id=<?= $row['id'] ?>" class="btn btn-outline-danger" onClick="return confirm('Yakin akan menghapus?')">Hapus</a>
+                            <a href="functions.php?action=deletepermanent&id=<?= $row['id'] ?>" class="btn btn-outline-danger" onClick="return confirm('Yakin akan menghapus?')">Hapus</a>
 
                         </td>
                     </tr>
