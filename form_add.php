@@ -13,7 +13,11 @@ if (isset($_POST['btn_check_nopol'])) {
     $nopol = $_POST['txt_nopol'];
 
     // Check if `nopol` exists in `tbl_kendaraan`
-    $stmt = $conn->prepare("SELECT nopol, jenis_kendaraan, id_karyawan FROM tbl_kendaraan WHERE nopol = ?");
+    $stmt = $conn->prepare("
+    SELECT k.nopol, k.jenis_kendaraan, k.id_karyawan, p.nama_karyawan 
+    FROM tbl_kendaraan k 
+    LEFT JOIN tbl_karyawan p ON k.id_karyawan = p.id
+    WHERE k.nopol = ?");
     $stmt->bind_param("s", $nopol);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -22,11 +26,11 @@ if (isset($_POST['btn_check_nopol'])) {
         $row = $result->fetch_assoc();
         $nopol = $row['nopol'];
         $jenis_kendaraan = $row['jenis_kendaraan'];
-        $pemilik = $row['id_karyawan'];  // Assuming 'id_karyawan' links to owner
+        $pemilik = $row['nama_karyawan'];  
     } else {
         $error = "The entered nopol does not exist in tbl_kendaraan.";
-        $jenis_kendaraan = ''; // Clear jenis_kendaraan if not found
-        $pemilik = 'umum'; // Default pemilik if not found
+        $jenis_kendaraan = ''; 
+        $pemilik = 'umum'; 
     }
 }
 
@@ -37,19 +41,34 @@ if (isset($_POST['submit'])) {
     $pemilik = $_POST['txt_pemilik']; // Ensure this matches the input name
     $tanggal = date('Y-m-d');
 
-    // Insert data into tbl_parkir
-    $insertQuery = "INSERT INTO tbl_parkir (nopol, jenis_kendaraan, pemilik, tanggal) VALUES (?, ?, ?, ?)";
-    $insertStmt = $conn->prepare($insertQuery);
-    $insertStmt->bind_param("ssss", $nopol, $jenis_kendaraan, $pemilik, $tanggal);
+    // connect
+    $stmt = $conn->prepare("
+    SELECT * FROM tbl_parkir WHERE nopol = ?  AND tanggal = ?");
+    $stmt->bind_param("ss", $nopol, $tanggal);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    if ($insertStmt->execute()) {
-        echo "Data successfully inserted into tbl_parkir.";
-        $showForm = false;  // Hide form after successful insert
-    } else {
-        echo "Error inserting data: " . $conn->error;
+    if($result->num_rows > 0){
+        $error = "Sudah ada kendaraan yang patkir.";
+    }else{
+        // Insert data into tbl_parkir
+        $insertQuery = "INSERT INTO tbl_parkir (nopol, jenis_kendaraan, pemilik, tanggal) VALUES (?, ?, ?, ?) ";
+        $insertStmt = $conn->prepare($insertQuery);
+        $insertStmt->bind_param("ssss", $nopol, $jenis_kendaraan, $pemilik, $tanggal);
+
+        if ($insertStmt->execute()) {
+            echo "Data successfully inserted into tbl_parkir.";
+            $showForm = false;  // Hide form after successful insert
+
+        } else {
+            echo "Error inserting data: " . $conn->error;
+        }
+
+        $insertStmt->close();
     }
 
-    $insertStmt->close();
+    
+    
 }
 
 $conn->close();
@@ -77,12 +96,18 @@ include('layout/header.php');
                         <div class="mb-3 ">
                             <label>nopol</label>
                             <input type="text" name="txt_nopol" class="form-control" placeholder="Masukan Plat Nomor" value="<?= htmlspecialchars($nopol); ?>" autocomplete="off" />
-                            <button type="submit" class="btn btn-success" name="btn_check_nopol">Check nopol</button>
+                            <button type="submit" class="btn btn-success" name="btn_check_nopol" autocomplete="on">Check nopol</button>
                         </div>
 
                         <div class="mb-3">
                             <label>jenis kendaraan</label>
-                            <input type="text" name="txt_jenisKendaraan" class="form-control" placeholder="Input jenis kendaraan" value="<?= htmlspecialchars($jenis_kendaraan); ?>" autocomplete="off" readonly />
+                            <!-- <input type="text" name="txt_jenisKendaraan" class="form-control" placeholder="Input jenis kendaraan" value="<?= htmlspecialchars($jenis_kendaraan); ?>" autocomplete="off" readonly /> -->
+                            <select name="txt_jenisKendaraan" class="form-control">
+                                <option value="">Pilih Jenis Kendaraan</option>
+                                <option value="motor" <?= $jenis_kendaraan === 'motor' ? 'selected' : ''; ?>>Motor</option>
+                                <option value="mobil" <?= $jenis_kendaraan === 'mobil' ? 'selected' : ''; ?>>Mobil</option>
+                                <option value="lainnya" <?= $jenis_kendaraan === 'lainnya' ? 'selected' : ''; ?>>Lainnya</option>
+                            </select>
                         </div>
 
                         <div class="mb-3">

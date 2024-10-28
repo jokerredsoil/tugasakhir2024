@@ -3,6 +3,7 @@ require 'connection.php';
 // $data =myquery("SELECT * FROM tbl_parkir");
 $data = myquery("SELECT p.id, p.nopol, p.jenis_kendaraan, p.pemilik, p.tanggal, p.masuk, p.keluar
 FROM tbl_parkir as p
+WHERE P.keluar is null
 ");
 
 // $data_kendaraan = myquery("SELECT ka.nama_karyawan, ke.jenis_kendaraan, ke.nopol
