@@ -1,37 +1,62 @@
 <?php
+// Connect to the database
 require 'connection.php';
 
+$nopol = '';
+$jenis_kendaraan = '';
+$pemilik = '';
+$error = '';
+$showForm = true;
 
-$data_karyawan = myquery("SELECT * FROM tbl_karyawan");
-$data_kendaraan = myquery("SELECT * FROM tbl_kendaraan");
 
 
+// Check if "Check nopol" button was clicked
+if (isset($_POST['btn_check_nopol'])) {
+    echo 'ok';
+    $nopol = $_POST['txt_nopol'];
 
+    // Check if `nopol` exists in `tbl_kendaraan`
+    $stmt = $conn->prepare("SELECT nopol, jenis_kendaraan, id_karyawan FROM tbl_kendaraan WHERE nopol = ?");
+    $stmt->bind_param("s", $nopol);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-if (isset($_POST['submit_insert_karyawan'])) {
-    $nopol= $_POST['txt_nopol'];
-    $jenis_kendaraan = $_POST['txt_jenisKendaraan'];
-
-    $pemilik= $_POST['txt_pemilik'];
-    
-    $masuk = $_POST['txt_masuk'];
-
-    // Menformat tanggal
-    $tanggal_baru = new DateTime($masuk);
-    $formatted_tanggal = $tanggal_baru->format('Y-m-d');
-
-    /// Insert
-    $query_insert = "INSERT INTO tbl_parkir VALUE (null, '$nopol', '$jenis_kendaraan', '$pemilik', '$formatted_tanggal',null)";
-
-    $res = mysqli_query($conn, $query_insert);
-
-    if ($res) {
-        header("Location: index.php");
-        exit();
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $nopol = $row['nopol'];
+        $jenis_kendaraan = $row['jenis_kendaraan'];
+        $pemilik = $row['id_karyawan'];  // Assuming 'id_karyawan' links to owner
     } else {
-        $err = "Data gagal di input";
+        $error = "The entered nopol does not exist in tbl_kendaraan.";
+    
+        $jenis_kendaraan = '';
+        $pemilik = 'umum';
     }
 }
+
+// Handle form submission for inserting into `tbl_parkir`
+if (isset($_POST['submit'])) {
+    $nopol = $_POST['txt_nopol'];
+    $jenis_kendaraan = $_POST['jenis_kendaraan'];
+    $pemilik = $_POST['pemilik'];
+    $tanggal = date('Y-m-d');
+
+    // Insert data into tbl_parkir
+    $insertQuery = "INSERT INTO tbl_parkir (nopol, jenis_kendaraan, pemilik, tanggal) VALUES (?, ?, ?, ?)";
+    $insertStmt = $conn->prepare($insertQuery);
+    $insertStmt->bind_param("ssss", $nopol, $jenis_kendaraan, $pemilik, $tanggal);
+
+    if ($insertStmt->execute()) {
+        echo "Data successfully inserted into tbl_parkir.";
+        $showForm = false;  // Hide form after successful insert
+    } else {
+        echo "Error inserting data: " . $conn->error;
+    }
+
+    $insertStmt->close();
+}
+
+$conn->close();
 ?>
 <?php
 include('layout/header.php');
@@ -52,9 +77,11 @@ include('layout/header.php');
                 <div class="card-body">
 
                     <form method="POST">
-                        <div class="mb-3">
+                        <div class="mb-3 ">
                             <label>nopol</label>
                             <input type="text" name="txt_nopol" class="form-control" placeholder="Masukan Plat Nomor" autocomplete="off" />
+                            <button type="button" class="btn btn-success" name="btn_check_nopol">Success</button>
+                           
                         </div>
 
                         <div class="mb-3">
@@ -72,7 +99,7 @@ include('layout/header.php');
                             <input type="date" name="txt_masuk" class="form-control" autocomplete="off" />
                         </div>
 
-                        
+
 
                         <!-- <div class="mb-3">
                                 <label>JENIS KENDARAAN</label>
