@@ -1,6 +1,5 @@
 <?php
 require 'connection.php';
-<<<<<<< HEAD
 
 $data = myquery("SELECT p.id, p.nopol, p.jenis_kendaraan, a.nama_karyawan, p.tanggal, p.masuk, p.keluar
 FROM tbl_parkir as p
@@ -8,7 +7,6 @@ JOIN tbl_karyawan as a
 ON p.pemilik = a.nama_karyawan");
 
 var_dump($data);
-=======
 // $data =myquery("SELECT * FROM tbl_parkir");
 $data = myquery("SELECT p.id, p.nopol, p.jenis_kendaraan, p.pemilik, p.tanggal, p.masuk, p.keluar
 FROM tbl_parkir as p
@@ -19,7 +17,6 @@ WHERE P.keluar is null
 // FROM tbl_kendaraan as ke
 // JOIN tbl_karyawan as ka ON ka.id = ke.id");
 // var_dump($data);
->>>>>>> dc5e04f86970216b7679ed6a85951cc247c0cfb4
 
 ?>
 
