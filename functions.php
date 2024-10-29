@@ -23,8 +23,6 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
         default:
             echo "Undefined action!";
     }
-} else {
-    echo "Action and ID are not defined!";
 }
 
 function soft_delete($id)
@@ -41,7 +39,7 @@ function soft_delete($id)
     $stmt->bind_param("si", $currentDateTime, $id);
 
     if ($stmt->execute()) {
-        echo "Record soft deleted successfully.";
+        echo "Motor berhasil Check-out successfully.";
         header("Location: index.php?messages=Berhasil Checkout");
         exit();
     } else {
@@ -57,16 +55,14 @@ function delete_data_permanent($id)
 {
     global $conn;
 
-    // Use prepared statements for deletion
+ 
     $stmt = $conn->prepare("DELETE FROM tbl_parkir WHERE id = ?");
     $stmt->bind_param("i", $id);
 
     if ($stmt->execute()) {
-        // Redirect to history.php with success message
         header("Location: history.php?messages=Berhasil dihapus");
         exit();
     } else {
-        // Redirect to history.php with error message
         header("Location: history.php?messages=Gagal dihapus");
         exit();
     }
@@ -128,7 +124,10 @@ function login($username, $password)
     $stmt = $conn->prepare($query);
     $stmt->bind_param("s", $username);
     $stmt->execute();
+    var_dump($stmt);
     $result = $stmt->get_result();
+    var_dump($result);
+    die();
 
     // Check if a matching user record was found
     if ($result->num_rows === 1) {
@@ -142,7 +141,7 @@ function login($username, $password)
             $_SESSION['txt_role'] = $user['role'];
 
             // Redirect to a welcome or dashboard page
-            header("Location: dashboard.php");
+            header("Location: index.php");
             exit();
         } else {
             return "Invalid password.";
@@ -179,7 +178,7 @@ function register($username, $password, $role = 'user')
     $stmt->bind_param("sss", $username, $hashed_password, $role);
 
     if ($stmt->execute()) {
-        return "Registration successful. You can now log in.";
+        return "Daftar '$role' dengan username '$username' berhasil.";
     } else {
         return "Error: " . $stmt->error;
     }
