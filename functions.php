@@ -1,4 +1,12 @@
 <?php
+session_start();
+
+
+if (!isset($_SESSION['username'])) {
+    header("Location: auth/login.php"); 
+    exit();
+}
+
 require 'connection.php';
 
 // $tabel = 'tbl_parkir';
@@ -25,7 +33,8 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
     echo "Action and ID are not defined!";
 }
 
-function soft_delete($id) {
+function soft_delete($id)
+{
     global $conn;
 
     // Get the current date and time
@@ -50,7 +59,8 @@ function soft_delete($id) {
     $stmt->close();
 }
 
-function delete_data_permanent($id) {
+function delete_data_permanent($id)
+{
     global $conn;
 
     // Use prepared statements for deletion
@@ -70,7 +80,8 @@ function delete_data_permanent($id) {
     $stmt->close();
 }
 
-function update($data) {
+function update($data)
+{
     global $conn;
 
     $id = $data['id'];
@@ -81,7 +92,7 @@ function update($data) {
     $masuk = $data['txt_masuk'];
     $keluar = $data['txt_keluar'];
 
-   
+
 
     // Format tanggal if not empty
     if (!empty($tanggal)) {
@@ -114,4 +125,70 @@ function update($data) {
     return $result;
 }
 
-?>
+function login($username, $password)
+{
+    global $conn;
+
+    // Prepare a SQL query to check for the user in the database
+    $query = "SELECT * FROM tbl_user WHERE username = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    // Check if a matching user record was found
+    if ($result->num_rows === 1) {
+        $user = $result->fetch_assoc();
+
+        // Verify the provided password against the hashed password in the database
+        if (password_verify($password, $user['password'])) {
+            // Set session variables for logged-in user
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['txt_username'] = $user['username'];
+            $_SESSION['txt_role'] = $user['role'];
+
+            // Redirect to a welcome or dashboard page
+            header("Location: dashboard.php");
+            exit();
+        } else {
+            return "Invalid password.";
+        }
+    } else {
+        return "User not found.";
+    }
+
+    // Close statement
+    $stmt->close();
+}
+
+function register($username, $password, $role = 'user')
+{
+    global $conn;
+
+    // Check if the username already exists
+    $query = "SELECT * FROM tbl_user WHERE username = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        return "Username already exists. Please choose a different username.";
+    }
+
+    // Hash the password
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+    // Insert the new user into the database
+    $insert_query = "INSERT INTO tbl_user (username, password, role) VALUES (?, ?, ?)";
+    $stmt = $conn->prepare($insert_query);
+    $stmt->bind_param("sss", $username, $hashed_password, $role);
+
+    if ($stmt->execute()) {
+        return "Registration successful. You can now log in.";
+    } else {
+        return "Error: " . $stmt->error;
+    }
+
+    $stmt->close();
+}

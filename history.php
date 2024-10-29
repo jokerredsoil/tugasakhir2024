@@ -1,4 +1,6 @@
 <?php
+
+
 require 'connection.php';
 // $data =myquery("SELECT * FROM tbl_parkir");
 $data = myquery("SELECT p.id, p.nopol, p.jenis_kendaraan, p.pemilik, p.tanggal, p.masuk, p.keluar

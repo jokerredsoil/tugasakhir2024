@@ -1,10 +1,10 @@
 <?php
-//memulai sesi
-// session_start();
+// memulai sesi
+session_start();
 
-// //di hapus seisinya
-// session_destroy();
+//di hapus seisinya
+session_destroy();
 
-// header("Location: login.php");
-// exit();
+header("Location: login.php");
+exit();
 ?>
