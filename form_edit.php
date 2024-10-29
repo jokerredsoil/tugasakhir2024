@@ -1,24 +1,26 @@
 <?php
 
+session_start();
 
 
-// Define action
 $_GET['action'] = 'edit';
 
-// Include required functions
+
 require 'functions.php';
 
-// Fetch the ID for the vehicle record to edit
+if (!isset($_SESSION['username'])) {
+    # code...
+}
 $id_kendaraan = $_GET['id'] ?? null;
 
-// Fetch data from the database
+
 $data_parkir = myquery("SELECT * FROM tbl_parkir WHERE id = $id_kendaraan ")[0] ?? null;
 
 $data_kendaraan = myquery("SELECT * FROM tbl_kendaraan");
 
-// Check if form is submitted for an update
+
 if (isset($_POST['submit_update'])) {
-    $_POST['id'] = $id_kendaraan;  // Ensure ID is included in $_POST
+    $_POST['id'] = $id_kendaraan;  
     if (update($_POST) > 0) {
         echo "<script>alert('DATA berhasil di ubah'); document.location.href = 'index.php';</script>";
     } else {

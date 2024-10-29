@@ -119,39 +119,31 @@ function login($username, $password)
 {
     global $conn;
 
-    // Prepare a SQL query to check for the user in the database
-    $query = "SELECT * FROM tbl_user WHERE username = ?";
-    $stmt = $conn->prepare($query);
+    $stmt = $conn->prepare("SELECT id, username, role, password FROM tbl_user WHERE username = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
-    var_dump($stmt);
     $result = $stmt->get_result();
-    var_dump($result);
-    die();
 
-    // Check if a matching user record was found
-    if ($result->num_rows === 1) {
+    // Check if user exists
+    if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
 
-        // Verify the provided password against the hashed password in the database
+        // Verify the password hash
         if (password_verify($password, $user['password'])) {
-            // Set session variables for logged-in user
+            // Set session variables
             $_SESSION['user_id'] = $user['id'];
-            $_SESSION['txt_username'] = $user['username'];
-            $_SESSION['txt_role'] = $user['role'];
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['role'] = $user['role'];
 
-            // Redirect to a welcome or dashboard page
-            header("Location: index.php");
-            exit();
+            // Redirect to dashboard
+            // header("Location: ../index.php");
+            // exit();
         } else {
             return "Invalid password.";
         }
     } else {
         return "User not found.";
     }
-
-    // Close statement
-    $stmt->close();
 }
 
 function register($username, $password, $role = 'user')
@@ -178,7 +170,10 @@ function register($username, $password, $role = 'user')
     $stmt->bind_param("sss", $username, $hashed_password, $role);
 
     if ($stmt->execute()) {
-        return "Daftar '$role' dengan username '$username' berhasil.";
+        
+        echo "Daftar '$role' dengan username '$username' berhasil.";
+        header("Location: login.php");
+        exit();
     } else {
         return "Error: " . $stmt->error;
     }
