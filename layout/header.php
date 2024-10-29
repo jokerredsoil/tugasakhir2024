@@ -29,6 +29,15 @@
                 if ($button2Text) {
                     echo '<button type="button" class="btn btn-primary col-sm-5"><a class="navbar-brand column" href="' . $button2Link . '">' . $button2Text . '</a></button>';
                 }
+              
+
+                // Button 3
+                $button3Text = $page === 'edit_form' ? 'Kembali' : '';
+                $button3Link = $page === 'edit_form' ? './index.php' : '';
+
+                if ($button3Text) {
+                    echo '<button type="button" class="btn btn-primary col-sm-5"><a class="navbar-brand column" href="' . $button3Link . '">' . $button3Text . '</a></button>';
+                }
                 ?>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">

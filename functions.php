@@ -1,7 +1,7 @@
 <?php
 require 'connection.php';
 
-$tabel = 'tbl_parkir';
+// $tabel = 'tbl_parkir';
 
 // If 'action' and 'id' are set, perform the corresponding action
 if (isset($_GET['action']) && isset($_GET['id'])) {
@@ -16,7 +16,7 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
             delete_data_permanent($id);
             break;
         case 'edit':
-            echo "Edit action not implemented.";
+            echo " ";
             break;
         default:
             echo "Undefined action!";
@@ -32,9 +32,9 @@ function soft_delete($id) {
     $currentDateTime = date('Y-m-d H:i:s');
 
     // Update the record to set the 'keluar' column to the current date and time
-    $sql = "UPDATE tbl_parkir SET keluar = ? WHERE id = ?";
+    $update_data = "UPDATE tbl_parkir SET keluar = ? WHERE id = ?";
 
-    $stmt = $conn->prepare($sql);
+    $stmt = $conn->prepare($update_data);
     $stmt->bind_param("si", $currentDateTime, $id);
 
     if ($stmt->execute()) {
@@ -73,26 +73,45 @@ function delete_data_permanent($id) {
 function update($data) {
     global $conn;
 
-    $id = $data['id_person'];
-    $nama = $data['txt_nama'];
-    $ktp = $data['txt_ktp'];
-    $alamat = $data['select_alamat'];
+    $id = $data['id'];
+    $nopol = $data['txt_nopol'];
+    $jenis_kendaraan = $data['txt_jenis_kendaraan'];
+    $pemilik = $data['txt_pemilik'];
     $tanggal = $data['txt_tanggal'];
+    $masuk = $data['txt_masuk'];
+    $keluar = $data['txt_keluar'];
 
-    // Format date
-    $tanggal_baru = new DateTime($tanggal);
-    $formatted_tanggal = $tanggal_baru->format("Y-m-d");
+   
 
-    // Update the record using prepared statements
-    $sql = "UPDATE tb_person SET nama = ?, ktp = ?, alamat = ?, tgl_daftar = ? WHERE id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssi", $nama, $ktp, $alamat, $formatted_tanggal, $id);
-
-    if ($stmt->execute()) {
-        return $stmt->affected_rows;
+    // Format tanggal if not empty
+    if (!empty($tanggal)) {
+        $tanggal_baru = new DateTime($tanggal);
+        $formatted_tanggal = $tanggal_baru->format("Y-m-d");
     } else {
+        $formatted_tanggal = null;
+    }
+
+    // Prepare the update_data query with placeholders for parameters
+    $update_data = "UPDATE tbl_parkir SET nopol = ?, jenis_kendaraan = ?, pemilik = ?, tanggal = ?, masuk = ?, keluar = ? WHERE id = ?";
+    $stmt = $conn->prepare($update_data);
+
+    if ($stmt === false) {
         return 0;
     }
 
+    // Bind the parameters
+    $stmt->bind_param("ssssssi", $nopol, $jenis_kendaraan, $pemilik, $formatted_tanggal, $masuk, $keluar, $id);
+
+    // Execute and check if update was successful
+    $result = 0;
+    if ($stmt->execute()) {
+        $result = $stmt->affected_rows;
+    }
+
+    // Close the statement
     $stmt->close();
+
+    return $result;
 }
+
+?>
