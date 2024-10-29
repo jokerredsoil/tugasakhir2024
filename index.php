@@ -1,5 +1,8 @@
 <?php
 require 'connection.php';
+session_start();
+
+
 
 
 // $data =myquery("SELECT * FROM tbl_parkir");
