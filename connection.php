@@ -12,6 +12,8 @@ if (!$conn) {
 } else {
     $x = 'sambungan berhasil <br/>';
     echo "$x";
+    $x = '';
+    echo "$x";
     
 }
 
