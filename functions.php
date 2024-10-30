@@ -136,8 +136,8 @@ function login($username, $password)
             $_SESSION['role'] = $user['role'];
 
             // Redirect to dashboard
-            // header("Location: ../index.php");
-            // exit();
+            header("Location: ../index.php");
+            exit();
         } else {
             return "Invalid password.";
         }
@@ -163,6 +163,7 @@ function register($username, $password, $role = 'user')
 
     // Hash the password
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    var_dump($hashed_password);
 
     // Insert the new user into the database
     $insert_query = "INSERT INTO tbl_user (username, password, role) VALUES (?, ?, ?)";

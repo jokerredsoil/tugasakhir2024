@@ -19,35 +19,35 @@
                 $button1Link = $page === 'index' ? './form_add.php' : ($page === 'add_form' ? './index.php' : '');
 
                 if ($button1Text) {
-                    echo '<button type="button" class="btn btn-success col-sm-5"><a class="navbar-brand column" href="' . $button1Link . '">' . $button1Text . '</a></button>';
+                    echo '<a class="btn btn-primary me-2" href="' . $button1Link . '">' . $button1Text . '</a>';
                 }
 
                 // Button 2
-                $button2Text = $page === 'index' ? 'History' : ($page === 'history' ? 'Kembali' : '');
+                $button2Text = $page === 'index' ? 'kendaraan Keluar' : ($page === 'history' ? 'Kembali' : '');
                 $button2Link = $page === 'index' ? './history.php' : ($page === 'history' ? './index.php' : '');
 
                 if ($button2Text) {
-                    echo '<button type="button" class="btn btn-primary col-sm-5"><a class="navbar-brand column" href="' . $button2Link . '">' . $button2Text . '</a></button>';
+                    echo '<a class="btn btn-success me-2" href="' . $button2Link . '">' . $button2Text . '</a>';
                 }
-              
+
 
                 // Button 3
                 $button3Text = $page === 'edit_form' ? 'Kembali' : '';
                 $button3Link = $page === 'edit_form' ? './index.php' : '';
 
                 if ($button3Text) {
-                    echo '<button type="button" class="btn btn-primary col-sm-5"><a class="navbar-brand column" href="' . $button3Link . '">' . $button3Text . '</a></button>';
+                    echo '<a class="btn btn-danger me-2" href="' . $button3Link . '">' . $button3Text . '</a>';
                 }
                 ?>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarburgermenu" aria-controls="navbarburgermenu" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                    <ul class="navbar-nav me-auto sm-3">
+                <div class="collapse navbar-collapse justify-content-end me-3" id="navbarburgermenu">
+                    <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="auth/logout.php">Logout</a>
+                            <a class="btn btn-danger" aria-current="page" href="auth/logout.php">Logout</a>
                         </li>
                     </ul>
                 </div>

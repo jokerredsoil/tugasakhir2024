@@ -11,6 +11,7 @@ require 'connection.php';
 // $data =myquery("SELECT * FROM tbl_parkir");
 $data = myquery("SELECT p.id, p.nopol, p.jenis_kendaraan, p.pemilik, p.tanggal, p.masuk, p.keluar
 FROM tbl_parkir as p
+WHERE p.keluar is not null
 ");
 
 ?>
@@ -34,7 +35,9 @@ include('layout/header.php');
                 </tr>
             </thead>
             <tbody>
+                
                 <?php foreach ($data as $row): ?>
+                    
                    
                     <tr>
                         <td><?= $row['nopol'] ?></td>
@@ -45,12 +48,13 @@ include('layout/header.php');
                         <td><?= $row['keluar'] ?></td>
                         <td scope="row">
                             <!-- <a href="form_edit.php?id=<?=$row['id'] ?>" class="btn btn-primary">Edit</a> -->
-                            <a href="functions.php?action=deletepermanent&id=<?= $row['id'] ?>" class="btn btn-outline-danger" onClick="return confirm('Yakin akan menghapus?')">Hapus</a>
+                            <a href="functions.php?action=deletepermanent&id=<?= $row['id'] ?>" class="btn btn-outline-danger" onClick="return confirm('Yakin akan menghapus?')">Hapus permanent</a>
 
                         </td>
                     </tr>
                    
                 <?php endforeach; ?>
+            
             </tbody>
         </table>
 

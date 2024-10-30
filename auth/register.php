@@ -39,6 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Register</button>
                 </form>
+                <button type="button" class="btn btn-danger w-100" onclick=" window.location.href='login.php'">Back</button>
             </div>
         </div>
     </div>

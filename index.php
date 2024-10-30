@@ -40,7 +40,7 @@ include('layout/header.php');
                     <th>pemilik</th>
                     <!-- <th>tanggal</th> -->
                     <th>masuk</th>
-                    <th>keluar</th>
+                    <!-- <th>keluar</th> -->
                     <th>aksi</th>
                 </tr>
             </thead>
@@ -53,7 +53,7 @@ include('layout/header.php');
                         <td><?= $row['pemilik'] ?></td>
                         <!-- <td><?= $row['tanggal'] ?></td> -->
                         <td><?= $row['masuk'] ?></td>
-                        <td><?= $row['keluar'] ?></td>
+                        <!-- <td><?= $row['keluar'] ?></td> -->
                         <td scope="row">
                             <a href="form_edit.php?id=<?=$row['id'] ?>" class="btn btn-primary">Edit</a>
                             <a href="functions.php?action=softdelete&id=<?= $row['id'] ?>" class="btn btn-outline-danger" onClick="return confirm('Yakin akan menghapus?')">Hapus</a>
