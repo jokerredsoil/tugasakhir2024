@@ -105,15 +105,15 @@ include('layout/header.php');
                     <form method="POST">
                         <div class="mb-3 ">
                             <label>nopol</label>
-                            <input type="text" name="txt_nopol" class="form-control" placeholder="Masukan Plat Nomor" value="<?= htmlspecialchars($nopol); ?>" autocomplete="on" required />
-                            <button type="submit" class="btn btn-success" name="btn_check_nopol" autocomplete="on" >Check nopol</button>
+                            <input type="text" name="txt_nopol" class="form-control" placeholder="Masukan Plat Nomor" value="<?= htmlspecialchars($nopol); ?>" autocomplete="off" />
+                            <button type="submit" class="btn btn-success" name="btn_check_nopol" autocomplete="on">Check nopol</button>
                         </div>
 
                         <div class="mb-3">
                             <label>jenis kendaraan</label>
                             <!-- <input type="text" name="txt_jenisKendaraan" class="form-control" placeholder="Input jenis kendaraan" value="<?= htmlspecialchars($jenis_kendaraan); ?>" autocomplete="off" readonly /> -->
-                            <select name="txt_jenisKendaraan" class="form-control" required>
-                                <option value="" >Pilih Jenis Kendaraan</option>
+                            <select name="txt_jenisKendaraan" class="form-control">
+                                <option value="">Pilih Jenis Kendaraan</option>
                                 <option value="motor" <?= $jenis_kendaraan === 'motor' ? 'selected' : ''; ?>>Motor</option>
                                 <option value="mobil" <?= $jenis_kendaraan === 'mobil' ? 'selected' : ''; ?>>Mobil</option>
                                 <option value="lainnya" <?= $jenis_kendaraan === 'lainnya' ? 'selected' : ''; ?>>Lainnya</option>

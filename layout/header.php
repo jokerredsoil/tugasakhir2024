@@ -38,6 +38,15 @@
                 if ($button3Text) {
                     echo '<a class="btn btn-danger me-2" href="' . $button3Link . '">' . $button3Text . '</a>';
                 }
+                // BUTTON ADMIN 
+                $buttonAdminText = $page === 'index' ? 'Tambah Karyawan' : ($page === 'add_karyawan' ? 'Kembali' : '');
+                $buttonAdminLink = $page === 'index' ? './add_karyawan.php' : ($page === 'add_karyawan' ? './index.php' : '');
+
+                $buttonUserText = $page === 'index' ? 'Data Karyawan' : ($page === 'dataKaryawan' ? 'Kembali' : '');
+                $buttonUserLink = $page === 'index' ? './dataKaryawan.php' : ($page === 'data_karyawan' ? './index.php' : '');
+
+
+             
                 ?>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarburgermenu" aria-controls="navbarburgermenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,6 +56,18 @@
                 <div class="collapse navbar-collapse justify-content-end me-3" id="navbarburgermenu">
                     <ul class="navbar-nav">
                         <li class="nav-item">
+                            <?php
+                           
+                            if ($buttonAdminText) {
+
+                                echo '<a class="btn btn-primary me-2" href="' . $buttonAdminLink . '">' . $buttonAdminText . '</a>';
+                               
+                            }
+                            if ($buttonUserText) {
+                                echo '<a class="btn btn-primary me-2" href="' . $buttonUserLink . '">' . $buttonUserText . '</a>';
+                               
+                            }
+                            ?>
                             <a class="btn btn-danger" aria-current="page" href="auth/logout.php">Logout</a>
                         </li>
                     </ul>
