@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,39 +15,55 @@
             <div class="container-fluid">
 
                 <?php
-                // Button 1
-                $button1Text = $page === 'index' ? 'Masuk Kendaraan' : ($page === 'add_form' ? 'Kembali' : '');
+                
+
+
+
+                
+                
+                // Button Masuk Kendaraan
+                $button1Text = $page === 'index' ? 'Kendaraan Masuk' : ($page === 'add_form' ? 'Kembali' : '');
                 $button1Link = $page === 'index' ? './form_add.php' : ($page === 'add_form' ? './index.php' : '');
 
                 if ($button1Text) {
                     echo '<a class="btn btn-primary me-2" href="' . $button1Link . '">' . $button1Text . '</a>';
                 }
 
-                // Button 2
+                // Button  
                 $button2Text = $page === 'index' ? 'kendaraan Keluar' : ($page === 'history' ? 'Kembali' : '');
                 $button2Link = $page === 'index' ? './history.php' : ($page === 'history' ? './index.php' : '');
 
                 if ($button2Text) {
                     echo '<a class="btn btn-success me-2" href="' . $button2Link . '">' . $button2Text . '</a>';
-                }
-
-
-                // Button 3
-                $button3Text = $page === 'edit_form' ? 'Kembali' : '';
-                $button3Link = $page === 'edit_form' ? './index.php' : '';
-
-                if ($button3Text) {
-                    echo '<a class="btn btn-danger me-2" href="' . $button3Link . '">' . $button3Text . '</a>';
-                }
-                // BUTTON ADMIN 
-                $buttonAdminText = $page === 'index' ? 'Tambah Karyawan' : ($page === 'add_karyawan' ? 'Kembali' : '');
-                $buttonAdminLink = $page === 'index' ? './karyawan_tambah.php' : ($page === 'add_karyawan' ? './index.php' : '');
+                }          
 
                 $buttonUserText = $page === 'index' ? 'Data Karyawan' : ($page === 'data_karyawan' ? 'Kembali' : '');
                 $buttonUserLink = $page === 'index' ? './karyawan_data.php' : ($page === 'data_karyawan' ? './index.php' : '');
 
-
+                if (hasUserRole($userId, 'admin')) {
+                    // Admin specific code
+                    if ($buttonUserText) {
+                        echo '<a class="btn btn-secondary me-2" href="' . $buttonUserLink . '">' . $buttonUserText . '</a>';
+                    }
+                } else {
+                    // Handle non-admin case
+                    echo " ";
+                }
+                // Button data karyawan
+                
+                   
+                    
+    
              
+               
+
+                 // Button back
+                 $button3Text = $page === 'edit_form' ? 'Kembali' : '';
+                 $button3Link = $page === 'edit_form' ? './index.php' : '';
+ 
+                 if ($button3Text) {
+                     echo '<a class="btn btn-danger me-2" href="' . $button3Link . '">' . $button3Text . '</a>';
+                 }
                 ?>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarburgermenu" aria-controls="navbarburgermenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,16 +74,16 @@
                     <ul class="navbar-nav">
                         <li class="nav-item">
                             <?php
-                           
+
+                            // BUTTON ADMIN 
+                            $buttonAdminText = $page === 'index' ? 'Tambah Karyawan' : ($page === 'add_karyawan' ? 'Kembali' : '');
+                            $buttonAdminLink = $page === 'index' ? './karyawan_tambah.php' : ($page === 'add_karyawan' ? './index.php' : '');
+
                             if ($buttonAdminText) {
 
                                 echo '<a class="btn btn-primary me-2" href="' . $buttonAdminLink . '">' . $buttonAdminText . '</a>';
-                               
                             }
-                            if ($buttonUserText) {
-                                echo '<a class="btn btn-primary me-2" href="' . $buttonUserLink . '">' . $buttonUserText . '</a>';
-                               
-                            }
+
                             ?>
                             <a class="btn btn-danger" aria-current="page" href="auth/logout.php">Logout</a>
                         </li>

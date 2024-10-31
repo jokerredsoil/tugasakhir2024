@@ -92,38 +92,40 @@ function update_karyawan($data) {
     } else {
         $formatted_tanggal = null;
     }
-    
-    // Update tbl_karyawan
-    $update_data_karyawan = "UPDATE tbl_karyawan SET nik = ?, nama_karyawan = ?, tanggal_masuk = ? WHERE id = ?";
-    $stmt1 = $conn->prepare($update_data_karyawan);
-    if ($stmt1 === false) {
-        return [0, 0]; // Return an array indicating failure for both updates
-    }
-    $stmt1->bind_param("sssi", $nik, $nama, $formatted_tanggal, $id);
+   // Update tbl_karyawan
+   $update_karyawan = "UPDATE tbl_karyawan SET nik = ?, nama_karyawan = ?, tanggal_masuk = ? WHERE id = ?";
+   $stmt1 = $conn->prepare($update_karyawan);
+   $stmt1->bind_param("sssi", $nik, $nama, $formatted_tanggal, $id);
+   $result1 = ($stmt1->execute()) ? $stmt1->affected_rows : 0;
 
-    $result1 = 0;
-    if ($stmt1->execute()) {
-        $result1 = $stmt1->affected_rows;
-    }
+   // Check if the employee has a vehicle record in tbl_kendaraan
+   $check_vehicle = "SELECT id_karyawan FROM tbl_kendaraan WHERE id_karyawan = ?";
+   $stmt_check = $conn->prepare($check_vehicle);
+   $stmt_check->bind_param("i", $id);
+   $stmt_check->execute();
+   $stmt_check->store_result();
 
-    // Update tbl_kendaraan
-    $update_data_kendaraan = "UPDATE tbl_kendaraan SET jenis_kendaraan = ?, nopol = ? WHERE id_karyawan = ?";
-    $stmt2 = $conn->prepare($update_data_kendaraan);
-    if ($stmt2 === false) {
-        return [$result1, 0]; // Return the first result and indicate failure for the second update
-    }
-    $stmt2->bind_param("ssi", $jenis_kendaraan, $nopol, $id);
-    
-    $result2 = 0;
-    if ($stmt2->execute()) {
-        $result2 = $stmt2->affected_rows;
-    }
+   // If a record exists, update it; otherwise, insert a new one
+   if ($stmt_check->num_rows > 0) {
+       $update_kendaraan = "UPDATE tbl_kendaraan SET jenis_kendaraan = ?, nopol = ? WHERE id_karyawan = ?";
+       $stmt2 = $conn->prepare($update_kendaraan);
+       $stmt2->bind_param("ssi", $jenis_kendaraan, $nopol, $id);
+   } else {
+       $insert_kendaraan = "INSERT INTO tbl_kendaraan (id_karyawan, jenis_kendaraan, nopol) VALUES (?, ?, ?)";
+       $stmt2 = $conn->prepare($insert_kendaraan);
+       $stmt2->bind_param("iss", $id, $jenis_kendaraan, $nopol);
+   }
 
-    // Close statements
-    $stmt1->close();
-    $stmt2->close();
-    
-    return [$result1, $result2]; // Return results as an array
+   // Execute the insert or update for tbl_kendaraan
+   $result2 = ($stmt2->execute()) ? $stmt2->affected_rows : 0;
+
+   // Close statements
+   $stmt1->close();
+   $stmt_check->close();
+   $stmt2->close();
+
+   return [$result1, $result2]; // Return results as an array
+
 }
 
 function update_parkir($data)
@@ -202,6 +204,30 @@ function login($username, $password)
     }
 }
 
+function hasUserRole($userId, $role) {
+    global $conn;
+
+    // Prepare the query to check the user role
+    $query = "SELECT role FROM tbl_user WHERE id = ?";
+    $stmt = $conn->prepare($query);
+    
+    if ($stmt === false) {
+        return false; // Error preparing statement
+    }
+    
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    // Check if the user exists and fetch the role
+    if ($result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+        return $user['role'] === $role; // Return true if the role matches
+    }
+
+    return false; // User not found or role does not match
+}
+
 function register($username, $password, $role = 'user')
 {
     global $conn;
@@ -237,3 +263,7 @@ function register($username, $password, $role = 'user')
 
     $stmt->close();
 }
+
+
+
+

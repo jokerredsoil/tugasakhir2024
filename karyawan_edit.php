@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'connection.php';
+require 'functions.php';
 
 if (!isset($_SESSION['username'])) {
     header("Location: auth/login.php");
@@ -32,7 +32,7 @@ $karyawan = $result->fetch_assoc();
 // Check if employee data is found
 if (!$karyawan) {
     // Redirect or handle the error as needed
-    header("Location: data_karyawan.php");
+    header("Location: karyawan_data.php");
     exit();
 }
 
@@ -59,8 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     list($result1, $result2) = update_karyawan($data);
 
     // Redirect or display a message based on the result
-    if ($result1 > 0 && $result2 > 0) {
-        header("Location: data_karyawan.php?message=update_success");
+    if ($result1 > 0 || $result2 > 0) {
+        header("Location: karyawan_data.php?message=update_success");
         exit();
     } else {
         $error_message = "Failed to update data.";
