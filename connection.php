@@ -10,10 +10,7 @@ $conn = mysqli_connect($host, $user, $passw, $db);
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 } else {
-    $x = 'sambungan berhasil <br/>';
-    echo "$x";
-    $x = '';
-    echo "$x";
+  echo "Welcome ''";
     
 }
 

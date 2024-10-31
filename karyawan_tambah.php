@@ -62,7 +62,7 @@ if (isset($_POST['submit'])) {
             $insertKendaraanStmt->bind_param("iss", $karyawan_id, $jenis_kendaraan, $nopol);
 
             if ($insertKendaraanStmt->execute()) {
-                echo "Data successfully inserted into tbl_karyawan and tbl_kendaraan.";
+                echo "Data Berhasil ditambahkan";
                 $showForm = false; // Hide the form after successful insert
             } else {
                 $error = "Error inserting vehicle data: " . $conn->error;
@@ -89,8 +89,8 @@ include('layout/header.php');
 
 <div class="container">
     <div class="row">
-        <div class="col-sm-12">
-            <h3 class="mt-4 mb-2">Formulir Tambah</h3>
+        <div class="col-sm-12 d-flex flex-column ">
+            <h3 class="mt-4 mb-2">TAMBAH DATA KARYAWAN</h3>
 
             <?php if ($error): ?>
                 <p style="color: red;"><?= $error; ?></p>
