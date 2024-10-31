@@ -8,9 +8,7 @@ $_GET['action'] = 'edit';
 
 require 'functions.php';
 
-if (!isset($_SESSION['username'])) {
-    # code...
-}
+
 $id_kendaraan = $_GET['id'] ?? null;
 
 

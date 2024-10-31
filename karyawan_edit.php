@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Call the update function
     list($result1, $result2) = update_karyawan($data);
-    
+
     // Redirect or display a message based on the result
     if ($result1 > 0 && $result2 > 0) {
         header("Location: data_karyawan.php?message=update_success");
@@ -79,7 +79,7 @@ include('layout/header.php');
         <?php if (isset($error_message)): ?>
             <div class="alert alert-danger"><?= $error_message ?></div>
         <?php endif; ?>
-        
+
         <form method="POST">
             <div class="mb-3">
                 <label for="nik" class="form-label">NIK</label>
@@ -93,21 +93,21 @@ include('layout/header.php');
                 <label for="tanggal_masuk" class="form-label">Tanggal Masuk</label>
                 <input type="date" class="form-control" id="tanggal_masuk" name="tanggal_masuk" value="<?= htmlspecialchars($karyawan['tanggal_masuk']) ?>" required>
             </div>
-           
+
             <div class="mb-3">
                 <label for="nopol" class="form-label">Nomor Polisi</label>
                 <input type="text" class="form-control" id="nopol" name="nopol" value="<?= htmlspecialchars($karyawan['nopol']) ?>" required>
             </div>
 
             <div class="mb-3">
-                            <label>Jenis Kendaraan</label>
-                            <select name="txt_jenisKendaraan" class="form-control" required>
-                                <option value="">Pilih Jenis Kendaraan</option>
-                                <option value="motor" <?= $karyawan === 'motor' ? 'selected' : ''; ?>>Motor</option>
-                                <option value="mobil" <?= $karyawan === 'mobil' ? 'selected' : ''; ?>>Mobil</option>
-                                <option value="lainnya" <?= $karyawan === 'lainnya' ? 'selected' : ''; ?>>Lainnya</option>
-                            </select>
-                        </div>
+                <label>Jenis Kendaraan</label>
+                <select id="jenis_kendaraan" name="jenis_kendaraan" class="form-control" required>
+                    <option value="">Pilih Jenis Kendaraan</option>
+                    <option value="motor" <?= $karyawan['jenis_kendaraan'] === 'motor' ? 'selected' : ''; ?>>Motor</option>
+                    <option value="mobil" <?= $karyawan['jenis_kendaraan'] === 'mobil' ? 'selected' : ''; ?>>Mobil</option>
+                    <option value="lainnya" <?= $karyawan['jenis_kendaraan'] === 'lainnya' ? 'selected' : ''; ?>>Lainnya</option>
+                </select>
+            </div>
             <button type="submit" class="btn btn-primary">Update</button>
             <a href="karyawan_data.php" class="btn btn-secondary">Cancel</a>
         </form>

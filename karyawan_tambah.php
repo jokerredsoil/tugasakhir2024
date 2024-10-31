@@ -11,6 +11,7 @@ if (!isset($_SESSION['username'])) {
 
 $nik = '';
 $nama_karyawan = '';
+$tanggal_masuk = '';
 $jenis_kendaraan = '';
 $karyawan_id = '';
 $nopol = '';
@@ -20,67 +21,52 @@ $error = '';
 if (isset($_POST['submit'])) {
     $nik = $_POST['txt_nik'];
     $nama_karyawan = $_POST['txt_namaKaryawan'];
+    $tanggal_masuk = $_POST['txt_tanggalMasuk'];
     $nopol = $_POST['txt_nopol'];
     $jenis_kendaraan = $_POST['txt_jenisKendaraan'];
 
-  
-    $stmt = $conn->prepare("SELECT kar.id  FROM tbl_karyawan as kar INNER JOIN tbl_kendaraan as ken ON ken.id_karyawan = kar.id WHERE kar.nik = ? OR ken.nopol = ?");
-    $stmt->bind_param("ss", $nik, $nopol); 
-    $stmt->execute();
-    $result = $stmt->get_result();
+    // Check if NIK or Nopol already exists
+    $stmtCheck = $conn->prepare("SELECT kar.id AS karyawan_id, ken.id_karyawan 
+                                 FROM tbl_karyawan AS kar 
+                                 LEFT JOIN tbl_kendaraan AS ken ON kar.id = ken.id_karyawan 
+                                 WHERE kar.nik = ? OR ken.nopol = ?");
+    $stmtCheck->bind_param("ss", $nik, $nopol);
+    $stmtCheck->execute();
+    $resultCheck = $stmtCheck->get_result();
     
-    if ($result->num_rows > 0) {
-        // Employee already exists, retrieve their ID
-        $employee = $result->fetch_assoc();
-        $karyawan_id = $employee['id'];
+    if ($resultCheck->num_rows > 0) {
+        $existingData = $resultCheck->fetch_assoc();
+        $error = $existingData['id_karyawan'] ? "Error: Nopol already exists." : "Error: NIK already exists.";
+    } else {
+        // Insert or update employee and vehicle data
+        if ($existingData = $resultCheck->fetch_assoc()) {
+            $karyawan_id = $existingData['karyawan_id'];
+        } else {
+            $stmtInsertKaryawan = $conn->prepare("INSERT INTO tbl_karyawan (nik, nama_karyawan, tanggal_masuk) VALUES (?, ?, ?)");
+            $stmtInsertKaryawan->bind_param("sss", $nik, $nama_karyawan, $tanggal_masuk);
+            $stmtInsertKaryawan->execute();
+            $karyawan_id = $conn->insert_id;
+        }
 
-        // Now insert data into `tbl_kendaraan`
-        $insertKendaraanQuery = "INSERT INTO tbl_kendaraan (id_karyawan, jenis_kendaraan, nopol) VALUES (?, ?, ?)";
-        $insertKendaraanStmt = $conn->prepare($insertKendaraanQuery);
-        $insertKendaraanStmt->bind_param("iss", $karyawan_id, $jenis_kendaraan, $nopol);
+        // Insert vehicle data
+        $stmtInsertKendaraan = $conn->prepare("INSERT INTO tbl_kendaraan (id_karyawan, jenis_kendaraan, nopol) VALUES (?, ?, ?)");
+        $stmtInsertKendaraan->bind_param("iss", $karyawan_id, $jenis_kendaraan, $nopol);
 
-        if ($insertKendaraanStmt->execute()) {
-            echo "Data successfully inserted into tbl_kendaraan.";
-            $showForm = false; // Hide the form after successful insert
+        if ($stmtInsertKendaraan->execute()) {
+            echo "Data successfully added.";
+            $showForm = false; // Hide form after success
         } else {
             $error = "Error inserting vehicle data: " . $conn->error;
         }
 
-        $insertKendaraanStmt->close();
-    } else {
-        // If the employee doesn't exist, insert them
-        $insertKaryawanQuery = "INSERT INTO tbl_karyawan (nik, nama_karyawan) VALUES (?, ?)";
-        $insertKaryawanStmt = $conn->prepare($insertKaryawanQuery);
-        $insertKaryawanStmt->bind_param("ss", $nik, $nama_karyawan);
-        
-        if ($insertKaryawanStmt->execute()) {
-            $karyawan_id = $conn->insert_id; // Retrieve the new employee ID
-
-            // Now insert data into `tbl_kendaraan`
-            $insertKendaraanQuery = "INSERT INTO tbl_kendaraan (id_karyawan, jenis_kendaraan, nopol) VALUES (?, ?, ?)";
-            $insertKendaraanStmt = $conn->prepare($insertKendaraanQuery);
-            $insertKendaraanStmt->bind_param("iss", $karyawan_id, $jenis_kendaraan, $nopol);
-
-            if ($insertKendaraanStmt->execute()) {
-                echo "Data Berhasil ditambahkan";
-                $showForm = false; // Hide the form after successful insert
-            } else {
-                $error = "Error inserting vehicle data: " . $conn->error;
-            }
-
-            $insertKendaraanStmt->close();
-        } else {
-            $error = "Error inserting employee data: " . $conn->error;
-        }
-
-        $insertKaryawanStmt->close();
+        $stmtInsertKaryawan->close();
+        $stmtInsertKendaraan->close();
     }
-
-    $stmt->close();
+    $stmtCheck->close();
 }
-
-$conn->close();
 ?>
+
+
 
 <?php
 $page = 'add_karyawan';
@@ -89,7 +75,7 @@ include('layout/header.php');
 
 <div class="container">
     <div class="row">
-        <div class="col-sm-12 d-flex flex-column ">
+        <div class="col-sm-12">
             <h3 class="mt-4 mb-2">TAMBAH DATA KARYAWAN</h3>
 
             <?php if ($error): ?>
@@ -107,6 +93,11 @@ include('layout/header.php');
                         <div class="mb-3">
                             <label>Nama Karyawan</label>
                             <input type="text" name="txt_namaKaryawan" class="form-control" placeholder="Masukan Nama Karyawan" value="<?= htmlspecialchars($nama_karyawan); ?>" autocomplete="on" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Tanggal Masuk</label>
+                            <input type="date" name="txt_tanggalMasuk" class="form-control"  value="<?= htmlspecialchars($tanggal_masuk); ?>" autocomplete="off" required />
                         </div>
 
                         <div class="mb-3">

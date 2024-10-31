@@ -58,7 +58,7 @@ if (isset($_POST['submit'])) {
     $result = $stmt->get_result();
 
     if($result->num_rows > 0){
-        $error = "Sudah ada kendaraan yang patkir.";
+        $error = "Kendaraan dengan nopol $nopol sudah terparkir.";
     }else{
         // Insert data into tbl_parkir
         $insertQuery = "INSERT INTO tbl_parkir (nopol, jenis_kendaraan, pemilik, tanggal) VALUES (?, ?, ?, ?) ";
@@ -111,7 +111,7 @@ include('layout/header.php');
 
                         <div class="mb-3">
                             <label>jenis kendaraan</label>
-                            <!-- <input type="text" name="txt_jenisKendaraan" class="form-control" placeholder="Input jenis kendaraan" value="<?= htmlspecialchars($jenis_kendaraan); ?>" autocomplete="off" readonly /> -->
+                          
                             <select name="txt_jenisKendaraan" class="form-control">
                                 <option value="">Pilih Jenis Kendaraan</option>
                                 <option value="motor" <?= $jenis_kendaraan === 'motor' ? 'selected' : ''; ?>>Motor</option>
