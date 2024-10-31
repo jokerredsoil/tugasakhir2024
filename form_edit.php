@@ -21,7 +21,7 @@ $data_kendaraan = myquery("SELECT * FROM tbl_kendaraan");
 
 if (isset($_POST['submit_update'])) {
     $_POST['id'] = $id_kendaraan;  
-    if (update($_POST) > 0) {
+    if (update_parkir($_POST) > 0) {
         echo "<script>alert('DATA berhasil di ubah'); document.location.href = 'index.php';</script>";
     } else {
         echo "<script>alert('DATA gagal di ubah');</script>";

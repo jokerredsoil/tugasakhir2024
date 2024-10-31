@@ -42,8 +42,8 @@
                 $buttonAdminText = $page === 'index' ? 'Tambah Karyawan' : ($page === 'add_karyawan' ? 'Kembali' : '');
                 $buttonAdminLink = $page === 'index' ? './add_karyawan.php' : ($page === 'add_karyawan' ? './index.php' : '');
 
-                $buttonUserText = $page === 'index' ? 'Data Karyawan' : ($page === 'dataKaryawan' ? 'Kembali' : '');
-                $buttonUserLink = $page === 'index' ? './dataKaryawan.php' : ($page === 'data_karyawan' ? './index.php' : '');
+                $buttonUserText = $page === 'index' ? 'Data Karyawan' : ($page === 'data_karyawan' ? 'Kembali' : '');
+                $buttonUserLink = $page === 'index' ? './data_Karyawan.php' : ($page === 'data_karyawan' ? './index.php' : '');
 
 
              
