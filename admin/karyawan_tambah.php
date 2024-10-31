@@ -2,7 +2,7 @@
 session_start();
 
 // Connect to the database
-require 'connection.php';
+require './connection.php';
 
 if (!isset($_SESSION['username'])) {
     header("Location: auth/login.php");
