@@ -6,7 +6,12 @@ require 'connection.php';
 // $tabel = 'tbl_parkir';
 
 // If 'action' and 'id' are set, perform the corresponding action
-if (isset($_GET['action']) && isset($_GET['id'])) {
+if (isset($_GET['action']) && isset($_GET['id'])){
+    if (isset($_GET['table'])){
+    $tabel = $_GET['table'];
+    $page = $_GET['page'];
+
+    }
     $action = $_GET['action'];
     $id = $_GET['id'];
 
@@ -15,7 +20,7 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
             soft_delete($id);
             break;
         case 'deletepermanent':
-            delete_data_permanent($id);
+            delete_data_permanent($id, $tabel, $page);
             break;
         case 'edit':
             echo " ";
@@ -51,19 +56,19 @@ function soft_delete($id)
     $stmt->close();
 }
 
-function delete_data_permanent($id)
+function delete_data_permanent($id, $tabel, $page)
 {
     global $conn;
-
+   
  
-    $stmt = $conn->prepare("DELETE FROM tbl_parkir WHERE id = ?");
+    $stmt = $conn->prepare("DELETE FROM $tabel WHERE id = ?");
     $stmt->bind_param("i", $id);
 
     if ($stmt->execute()) {
-        header("Location: history.php?messages=Berhasil dihapus");
+        header("Location: $page ?messages=Berhasil dihapus");
         exit();
     } else {
-        header("Location: history.php?messages=Gagal dihapus");
+        header("Location: $page ?messages=Gagal dihapus");
         exit();
     }
 

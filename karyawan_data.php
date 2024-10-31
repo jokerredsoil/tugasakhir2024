@@ -52,8 +52,8 @@ include('layout/header.php');
                         <td><?= htmlspecialchars($row['jenis_kendaraan'] ?? 'Tidak Ada') ?></td>
                         <td><?= htmlspecialchars($row['nopol'] ?? 'Tidak Ada') ?></td>
                         <td scope="row">
-                            <a href="form_edit.php?id=<?= $row['id'] ?>" class="btn btn-primary">Edit</a>
-                            <a href="functions.php?action=softdelete&id=<?= $row['id'] ?>" class="btn btn-outline-danger" onClick="return confirm('Yakin akan menghapus?')">Hapus data</a>
+                            <a href="karyawan_edit.php?id=<?= $row['id'] ?>" class="btn btn-primary">Edit</a>
+                            <a href="functions.php?action=deletepermanent&id=<?= $row['id'] ?>&table=tbl_karyawan&page=karyawan_data.php" class="btn btn-outline-danger" onClick="return confirm('Yakin akan menghapus?')">Hapus permanent</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

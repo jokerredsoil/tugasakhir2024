@@ -102,7 +102,7 @@ include('layout/header.php');
                 <input type="text" class="form-control" id="nopol" name="nopol" value="<?= htmlspecialchars($karyawan['nopol']) ?>" required>
             </div>
             <button type="submit" class="btn btn-primary">Update</button>
-            <a href="data_karyawan.php" class="btn btn-secondary">Cancel</a>
+            <a href="karyawan_data.php" class="btn btn-secondary">Cancel</a>
         </form>
     </div>
 </main>
