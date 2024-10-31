@@ -24,8 +24,8 @@ if (isset($_POST['submit'])) {
     $jenis_kendaraan = $_POST['txt_jenisKendaraan'];
 
   
-    $stmt = $conn->prepare("SELECT id FROM tbl_karyawan WHERE nik = ?");
-    $stmt->bind_param("s", $nik); // Only need to bind one parameter, NIK
+    $stmt = $conn->prepare("SELECT kar.id  FROM tbl_karyawan as kar INNER JOIN tbl_kendaraan as ken ON ken.id_karyawan = kar.id WHERE kar.nik = ? OR ken.nopol = ?");
+    $stmt->bind_param("ss", $nik, $nopol); 
     $stmt->execute();
     $result = $stmt->get_result();
     

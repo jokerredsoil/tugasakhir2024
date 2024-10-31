@@ -48,7 +48,7 @@ include('layout/header.php');
                         <td><?= $row['keluar'] ?></td>
                         <td scope="row">
                             <!-- <a href="form_edit.php?id=<?=$row['id'] ?>" class="btn btn-primary">Edit</a> -->
-                            <a href="functions.php?action=deletepermanent&id=<?= $row['id'] ?>" class="btn btn-outline-danger" onClick="return confirm('Yakin akan menghapus?')">Hapus permanent</a>
+                            <a href="functions.php?action=deletepermanent&id=<?= $row['id'] ?>&table=tbl_parkir&page=history.php" class="btn btn-outline-danger" onClick="return confirm('Yakin akan menghapus?')">Hapus permanent</a>
 
                         </td>
                     </tr>

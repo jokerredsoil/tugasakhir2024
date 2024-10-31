@@ -6,7 +6,12 @@ require 'connection.php';
 // $tabel = 'tbl_parkir';
 
 // If 'action' and 'id' are set, perform the corresponding action
-if (isset($_GET['action']) && isset($_GET['id'])) {
+if (isset($_GET['action']) && isset($_GET['id'])){
+    if (isset($_GET['table'])){
+    $tabel = $_GET['table'];
+    $page = $_GET['page'];
+
+    }
     $action = $_GET['action'];
     $id = $_GET['id'];
 
@@ -15,7 +20,7 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
             soft_delete($id);
             break;
         case 'deletepermanent':
-            delete_data_permanent($id);
+            delete_data_permanent($id, $tabel, $page);
             break;
         case 'edit':
             echo " ";
@@ -51,26 +56,77 @@ function soft_delete($id)
     $stmt->close();
 }
 
-function delete_data_permanent($id)
+function delete_data_permanent($id, $tabel, $page)
 {
     global $conn;
-
+   
  
-    $stmt = $conn->prepare("DELETE FROM tbl_parkir WHERE id = ?");
+    $stmt = $conn->prepare("DELETE FROM $tabel WHERE id = ?");
     $stmt->bind_param("i", $id);
 
     if ($stmt->execute()) {
-        header("Location: history.php?messages=Berhasil dihapus");
+        header("Location: $page ?messages=Berhasil dihapus");
         exit();
     } else {
-        header("Location: history.php?messages=Gagal dihapus");
+        header("Location: $page ?messages=Gagal dihapus");
         exit();
     }
 
     $stmt->close();
 }
 
-function update($data)
+function update_karyawan($data) {
+    global $conn;
+
+    $id = $data['id'];
+    $nik = $data['nik'];
+    $nama = $data['nama_karyawan'];
+    $tanggalM = $data['tanggal_masuk'];
+    $jenis_kendaraan = $data['jenis_kendaraan'];
+    $nopol = $data['nopol'];
+
+    // Format the tanggal_masuk if it's not empty
+    if (!empty($tanggalM)) {
+        $tanggal_baru = new DateTime($tanggalM);
+        $formatted_tanggal = $tanggal_baru->format("Y-m-d");
+    } else {
+        $formatted_tanggal = null;
+    }
+    
+    // Update tbl_karyawan
+    $update_data_karyawan = "UPDATE tbl_karyawan SET nik = ?, nama_karyawan = ?, tanggal_masuk = ? WHERE id = ?";
+    $stmt1 = $conn->prepare($update_data_karyawan);
+    if ($stmt1 === false) {
+        return [0, 0]; // Return an array indicating failure for both updates
+    }
+    $stmt1->bind_param("sssi", $nik, $nama, $formatted_tanggal, $id);
+
+    $result1 = 0;
+    if ($stmt1->execute()) {
+        $result1 = $stmt1->affected_rows;
+    }
+
+    // Update tbl_kendaraan
+    $update_data_kendaraan = "UPDATE tbl_kendaraan SET jenis_kendaraan = ?, nopol = ? WHERE id_karyawan = ?";
+    $stmt2 = $conn->prepare($update_data_kendaraan);
+    if ($stmt2 === false) {
+        return [$result1, 0]; // Return the first result and indicate failure for the second update
+    }
+    $stmt2->bind_param("ssi", $jenis_kendaraan, $nopol, $id);
+    
+    $result2 = 0;
+    if ($stmt2->execute()) {
+        $result2 = $stmt2->affected_rows;
+    }
+
+    // Close statements
+    $stmt1->close();
+    $stmt2->close();
+    
+    return [$result1, $result2]; // Return results as an array
+}
+
+function update_parkir($data)
 {
     global $conn;
 
@@ -84,7 +140,7 @@ function update($data)
 
 
 
-    // Format tanggal if not empty
+   
     if (!empty($tanggal)) {
         $tanggal_baru = new DateTime($tanggal);
         $formatted_tanggal = $tanggal_baru->format("Y-m-d");
@@ -92,7 +148,7 @@ function update($data)
         $formatted_tanggal = null;
     }
 
-    // Prepare the update_data query with placeholders for parameters
+   
     $update_data = "UPDATE tbl_parkir SET nopol = ?, jenis_kendaraan = ?, pemilik = ?, tanggal = ?, masuk = ?, keluar = ? WHERE id = ?";
     $stmt = $conn->prepare($update_data);
 
@@ -100,7 +156,7 @@ function update($data)
         return 0;
     }
 
-    // Bind the parameters
+   
     $stmt->bind_param("ssssssi", $nopol, $jenis_kendaraan, $pemilik, $formatted_tanggal, $masuk, $keluar, $id);
 
     // Execute and check if update was successful
