@@ -10,18 +10,23 @@ $conn = mysqli_connect($host, $user, $passw, $db);
 
 
 
-$pelaku = $_SESSION['username'];
+
 
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
-} else {
-    echo "<div class='alert alert-primary ' role='alert'>
-            <marquee>
-            welcome $pelaku
-            </marquee>
-            
-            </div> ";
 }
+
+if (isset($_SESSION['username'])) {
+    echo "<div class='alert alert-primary ' role='alert'>
+    <marquee>
+    <h3>welcome " . $_SESSION['username'] . "</h3>
+    </marquee>
+    
+    </div> ";
+}
+   
+  
+
 
 
 
