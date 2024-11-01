@@ -39,13 +39,10 @@
 
                 $buttonUserText = $page === 'index' ? 'Data Karyawan' : ($page === 'data_karyawan' ? 'Kembali' : '');
                 $buttonUserLink = $page === 'index' ? './karyawan_data.php' : ($page === 'data_karyawan' ? './index.php' : '');
-
-               
-                // Admin specific code
                 if ($buttonUserText) {
                     echo '<a class="btn btn-secondary me-2" href="' . $buttonUserLink . '">' . $buttonUserText . '</a>';
-                }                                            
-    
+                }   
+               
                  // Button back
                  $button3Text = $page === 'edit_form' ? 'Kembali' : '';
                  $button3Link = $page === 'edit_form' ? './index.php' : '';
@@ -65,13 +62,17 @@
                             <?php
 
                             // BUTTON ADMIN 
+
                             $buttonAdminText = $page === 'index' ? 'Tambah Karyawan' : ($page === 'add_karyawan' ? 'Kembali' : '');
 
                             $buttonAdminLink = $page === 'index' ? './karyawan_tambah.php' : ($page === 'add_karyawan' ? './index.php' : '');
 
-                            if ($buttonAdminText) {
-                                echo '<a class="btn btn-primary me-2" href="' . $buttonAdminLink . '">' . $buttonAdminText . '</a>';
+                            if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {
+                                if ($buttonAdminText) {
+                                    echo '<a class="btn btn-primary me-2" href="' . $buttonAdminLink . '">' . $buttonAdminText . '</a>';
+                                }                             
                             }
+                          
 
                             ?>
                             <a class="btn btn-danger" aria-current="page" href="auth/logout.php">Logout</a>

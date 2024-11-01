@@ -1,8 +1,4 @@
 <?php
-session_start();
-
-
-
 // Connect to the database
 require 'connection.php';
 

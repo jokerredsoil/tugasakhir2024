@@ -204,29 +204,7 @@ function login($username, $password)
     }
 }
 
-function hasUserRole($userId, $role) {
-    global $conn;
 
-    // Prepare the query to check the user role
-    $query = "SELECT role FROM tbl_user WHERE id = ?";
-    $stmt = $conn->prepare($query);
-    
-    if ($stmt === false) {
-        return false; // Error preparing statement
-    }
-    
-    $stmt->bind_param("i", $userId);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    // Check if the user exists and fetch the role
-    if ($result->num_rows > 0) {
-        $user = $result->fetch_assoc();
-        return $user['role'] === $role; // Return true if the role matches
-    }
-
-    return false; // User not found or role does not match
-}
 
 function register($username, $password, $role = 'user')
 {

@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 
 $host = 'localhost'; //localhost ; 127.0.0.1
 $user = 'root';
@@ -10,12 +10,14 @@ $conn = mysqli_connect($host, $user, $passw, $db);
 
 
 
+$pelaku = $_SESSION['username'];
+
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 } else {
     echo "<div class='alert alert-primary ' role='alert'>
             <marquee>
-            welcome $user
+            welcome $pelaku
             </marquee>
             
             </div> ";
