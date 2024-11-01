@@ -31,7 +31,10 @@ include('layout/header.php');
                     <!-- <th>tanggal</th> -->
                     <th>masuk</th>
                     <th>keluar</th>
-                    <th>aksi</th>
+                    <?php 
+                    if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {
+                    echo '<th>aksi</th>';}
+                    ?>
                 </tr>
             </thead>
             <tbody>
@@ -47,16 +50,16 @@ include('layout/header.php');
                         <td><?= $row['masuk'] ?></td>
                         <td><?= $row['keluar'] ?></td>
                         <?php
-                        if (condition) {
-                            # code...
-                        }
-                        
-                        ?>
-                        <td scope="row">
-                            <!-- <a href="form_edit.php?id=<?=$row['id'] ?>" class="btn btn-primary">Edit</a> -->
-                            <a href="functions.php?action=deletepermanent&id=<?= $row['id'] ?>&table=tbl_parkir&page=history.php" class="btn btn-outline-danger" onClick="return confirm('Yakin akan menghapus?')">Hapus permanent</a>
+                     
+                        echo '<td scope="row">';
+                        if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {
+                            echo '<a href="functions.php?action=deletepermanent&id='  .$row['id']. '&table=tbl_parkir&page=history.php "class="btn btn-outline-danger" onClick="return confirm(\' Yakin akan Menghapus ?\')">Hapus Permanent</a>';
+                        }                      
+                                              
+                            
 
-                        </td>
+                        echo '</td>';
+                        ?>
                     </tr>
                    
                 <?php endforeach; ?>
