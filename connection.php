@@ -8,7 +8,7 @@ $db = 'db_parkir';
 
 $conn = mysqli_connect($host, $user, $passw, $db);
 
-$user = $_SESSION['username'];
+
 
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
@@ -26,7 +26,6 @@ if (!$conn) {
 function myquery($query)
 {
     global $conn;
-
     $result = mysqli_query($conn, $query);
 
     $list = [];
