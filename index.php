@@ -29,7 +29,7 @@ WHERE P.keluar is null
 $page = 'index';
 include('layout/header.php');
 ?>
-<main class="flex-grow-1">
+<main >
     <div class="container-sm">
         <table class="table table-sm">
             <thead>

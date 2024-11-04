@@ -32,9 +32,10 @@ if (isset($_GET['action']) && isset($_GET['id'])){
 
 function soft_delete($id)
 {
+    
     global $conn;
-
-    // Get the current date and time
+   
+   
     $currentDateTime = date('Y-m-d H:i:s');
 
     // Update the record to set the 'keluar' column to the current date and time

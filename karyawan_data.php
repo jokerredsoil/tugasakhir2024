@@ -25,9 +25,10 @@ $data = myquery("SELECT kar.id, kar.nik, kar.nama_karyawan, kar.tanggal_masuk, k
 $page = 'data_karyawan';
 include('layout/header.php');
 ?>
-<main class="min-vh-100 d-flex align-items-center justify-content-center">
-    <div class="container-sm">
-        <table class="table table-sm">
+<main >
+    <div class="container-sm ">
+        <h3 class="mb-3 ">TAMBAH DATA KARYAWAN</h3>
+        <table class="table table-sm " >
             <thead>
                 <tr>
                     <th><a href="?sort=nik&order=<?= ($sort === 'nik' && $order === 'asc') ? 'desc' : 'asc' ?>">NIK</a></th>

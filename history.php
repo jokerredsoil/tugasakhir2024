@@ -21,8 +21,10 @@ $page = 'history';
 include('layout/header.php');
 ?>
 <main class="flex-grow-1">
+    
     <div class="container-sm">
         <table class="table table-sm">
+        <h3 class="mb-3">DATA KENDARAAN KELUAR</h3>
             <thead>
                 <tr>
                     <th>nopol</th>

@@ -15,7 +15,7 @@ $data_kendaraan = myquery("SELECT * FROM tbl_kendaraan");
 
 
 if (isset($_POST['submit_update'])) {
-    $_POST['id'] = $id_kendaraan;  
+    $_POST['id'] = $id_kendaraan;
     if (update_parkir($_POST) > 0) {
         echo "<script>alert('DATA berhasil di ubah'); document.location.href = 'index.php';</script>";
     } else {
@@ -24,26 +24,17 @@ if (isset($_POST['submit_update'])) {
 }
 
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Vehicle Data</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-</head>
-<body>
-
-    <?php
-    $page = 'edit_form';
-    include('layout/header.php');
-    ?>
+<?php
+$page = 'edit_form';
+include('layout/header.php');
+?>
+<main>
 
     <div class="container">
         <div class="row">
+        <h3 class="mt-4 mb-2">UBAH DATA KENDARAAN</h3>
             <div class="col-sm-12">
-                <h3 class="mt-4 mb-2">Edit Vehicle Data</h3>
+               
 
                 <?php if (isset($error)): ?>
                     <p style="color: red;"><?= htmlspecialchars($error); ?></p>
@@ -53,7 +44,7 @@ if (isset($_POST['submit_update'])) {
                     <div class="card-body">
                         <form method="POST">
 
-                        <input type="hidden" value="<?= $id?>" name="id"/>
+                            <input type="hidden" value="<?= $id ?>" name="id" />
 
                             <div class="mb-3">
                                 <label>Nopol</label>
@@ -87,7 +78,7 @@ if (isset($_POST['submit_update'])) {
 
                             <!-- <div class="mb-3">
                                 <label>Exit Time</label>
-                                <input type="datetime-local" name="txt_keluar" class="form-control" value="<?= htmlspecialchars(str_replace(' ', 'T', $data_parkir['keluar'] ?? null )); ?>" />
+                                <input type="datetime-local" name="txt_keluar" class="form-control" value="<?= htmlspecialchars(str_replace(' ', 'T', $data_parkir['keluar'] ?? null)); ?>" />
                             </div> -->
 
                             <button type="submit" class="btn btn-primary" name="submit_update">Simpan</button>
@@ -97,9 +88,13 @@ if (isset($_POST['submit_update'])) {
             </div>
         </div>
     </div>
+</main>
 
-    <?php include('layout/footer.php'); ?>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-</body>
-</html>
+
+
+
+
+<?php include('layout/footer.php'); ?>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

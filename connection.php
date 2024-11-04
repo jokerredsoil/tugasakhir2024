@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Jakarta');
 session_start();
 
 $host = 'localhost'; //localhost ; 127.0.0.1

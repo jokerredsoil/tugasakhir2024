@@ -53,7 +53,7 @@ if (isset($_POST['submit'])) {
     $stmt->execute();
     $result = $stmt->get_result();
 
-    if($result->num_rows > 0){
+    if($result->num_rows > 0 && !isset($tanggal)){
         $error = "Kendaraan dengan nopol $nopol sudah terparkir.";
     }else{
         // Insert data into tbl_parkir
@@ -83,12 +83,14 @@ $conn->close();
 $page = 'add_form';
 include('layout/header.php');
 ?>
-
+<main>
 <div class="container">
     <div class="row">
-        <div class="col-sm-12">
 
-            <h3 class="mt-4 mb-2">Formulir Tambah</h3>
+    
+        <div class="col-sm-12">
+        <h3 class="mt-4 mb-2">INPUT DATA PARKIR</h3>
+            
            
 
             <?php if ($error): ?>
@@ -133,6 +135,9 @@ include('layout/header.php');
         </div>
     </div>
 </div>
+
+</main>
+
 
 <?php
 include('layout/footer.php');
